@@ -21,6 +21,11 @@ Store operations are missing. In a real implementation there would have been cal
 the created / changed data objects. These are left out this implementation for brevity.
 
 
+## Missing Validations and Polishing
+ - It is possible to add the same product multiple times. When removing a product from the cart, only the first entry with the given productId will be removed.
+   A solution could be to give each shopping cart entry a unique ID, instead of identifying the entry by the product ID of that entry.
+
+
 ## Test Notes
 In this particular case there are not a lot of unit tests implemented. This is not because I do not believe in unit tests,
 but simply because most of the code in this project is simple "plumming" - transportation of data - so most of the
