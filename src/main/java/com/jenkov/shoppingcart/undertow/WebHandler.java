@@ -1,5 +1,6 @@
 package com.jenkov.shoppingcart.undertow;
 
+import com.jenkov.shoppingcart.ShoppingCartException;
 import com.jenkov.shoppingcart.actions.*;
 import com.jenkov.shoppingcart.dao.ProductDao;
 import com.jenkov.shoppingcart.dao.ProductDaoInMemory;
@@ -27,14 +28,22 @@ public class WebHandler implements HttpHandler {
     public void handleRequest(HttpServerExchange httpServerExchange) throws Exception {
         String uri = httpServerExchange.getRequestURI();
 
-        switch(uri) {
-            case "/create"   : { createCart(httpServerExchange); break; }
-            case "/add"      : { addToCart(httpServerExchange); break; }
-            case "/remove"   : { removeFromCart(httpServerExchange); break; }
-            case "/changeQnt": { changeQuantity(httpServerExchange); break; }
-            case "/list"     : { listCart(httpServerExchange); break; }
+        try {
+            switch(uri) {
+                case "/create"   : { createCart(httpServerExchange); break; }
+                case "/add"      : { addToCart(httpServerExchange); break; }
+                case "/remove"   : { removeFromCart(httpServerExchange); break; }
+                case "/changeQnt": { changeQuantity(httpServerExchange); break; }
+                case "/list"     : { listCart(httpServerExchange); break; }
 
-            default: { notFound(httpServerExchange); }
+                default: { notFound(httpServerExchange); }
+            }
+        } catch(ShoppingCartException e) {
+            httpServerExchange.setStatusCode(500);
+            httpServerExchange.getResponseSender().send(e.getMessage());
+        } catch(Throwable e) {
+            httpServerExchange.setStatusCode(500);
+            httpServerExchange.getResponseSender().send(e.toString());
         }
     }
 
@@ -48,8 +57,8 @@ public class WebHandler implements HttpHandler {
 
     private void addToCart(HttpServerExchange httpServerExchange) throws Exception {
         String shoppingCartId = getCartIdParam(httpServerExchange);
-        String productId      = httpServerExchange.getQueryParameters().get("productId").getFirst();
-        String quantityStr    = httpServerExchange.getQueryParameters().get("quantity").getFirst();
+        String productId      = getProductId(httpServerExchange);
+        String quantityStr    = getQuantity(httpServerExchange);
 
         //todo verify that quantity (in string form) is actually an integer
         long quantity = Long.valueOf(quantityStr);
@@ -60,13 +69,17 @@ public class WebHandler implements HttpHandler {
         httpServerExchange.getResponseSender().send("OK");
     }
 
+    private String getProductId(HttpServerExchange httpServerExchange) {
+        return httpServerExchange.getQueryParameters().get("productId").getFirst();
+    }
+
     private String getCartIdParam(HttpServerExchange httpServerExchange) {
         return httpServerExchange.getQueryParameters().get("cartId").getFirst();
     }
 
     private void removeFromCart(HttpServerExchange httpServerExchange) throws Exception {
         String shoppingCartId = getCartIdParam(httpServerExchange);
-        String productId      = httpServerExchange.getQueryParameters().get("productId").getFirst();
+        String productId      = getProductId(httpServerExchange);
 
         this.removeFromCartAction.removeFromCart(shoppingCartId, productId);
 
@@ -78,8 +91,8 @@ public class WebHandler implements HttpHandler {
 
     private void changeQuantity(HttpServerExchange httpServerExchange) throws Exception {
         String shoppingCartId = getCartIdParam(httpServerExchange);
-        String productId      = httpServerExchange.getQueryParameters().get("productId").getFirst();
-        String quantityStr    = httpServerExchange.getQueryParameters().get("quantity").getFirst();
+        String productId      = getProductId(httpServerExchange);
+        String quantityStr    = getQuantity(httpServerExchange);
 
         //todo verify that quantity (in string form) is actually an integer
         long quantity = Long.valueOf(quantityStr);
@@ -90,6 +103,10 @@ public class WebHandler implements HttpHandler {
         httpServerExchange.getResponseSender().send("OK");
 
 
+    }
+
+    private String getQuantity(HttpServerExchange httpServerExchange) {
+        return httpServerExchange.getQueryParameters().get("quantity").getFirst();
     }
 
     private void listCart(HttpServerExchange httpServerExchange) throws Exception {
