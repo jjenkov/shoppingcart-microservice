@@ -30,7 +30,7 @@ for the components in this app.
 
 ## Service URLS:
 
-- [http://localhost/createcartId=newCartId](http://localhost/createCart?cartId=cartId)
+- [http://localhost/createcartId=cartId](http://localhost/createCart?cartId=cartId)
 - [http://localhost/add?cartId=cartId&productId=prodId&quantity=123](http://localhost/addToCart?cartId=cartId&productId=prodId&quantity=123)
 - [http://localhost/remove?cartId=cartId&productId=prodId](http://localhost/remove?cartId=cartId&produdctId=prodId)
 - [http://localhost/changeQnt?cartId=newCartId&productId=prodId&quantity=456](http://localhost/changeQnt?cartId=newCartId&productId=prodId&quantity=456)
