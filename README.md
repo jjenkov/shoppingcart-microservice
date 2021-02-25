@@ -32,7 +32,7 @@ for the components in this app.
 
 - [http://localhost/create?cartId=cartId](http://localhost/create?cartId=cartId)
 - [http://localhost/add?cartId=cartId&productId=prodId&quantity=123](http://localhost/add?cartId=cartId&productId=prodId&quantity=123)
-- [http://localhost/remove?cartId=cartId&productId=prodId](http://localhost/remove?cartId=cartId&produdctId=prodId)
+- [http://localhost/remove?cartId=cartId&productId=prodId](http://localhost/remove?cartId=cartId&productId=prodId)
 - [http://localhost/changeQnt?cartId=cartId&productId=prodId&quantity=456](http://localhost/changeQnt?cartId=cartId&productId=prodId&quantity=456)
 - [http://localhost/list?cartId=cartId](http://localhost/list?cartId=cartId)
 
