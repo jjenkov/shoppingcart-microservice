@@ -28,10 +28,10 @@ the created / changed data objects. These are left out this implementation for b
 
 
 ## Test Notes
-In this particular case there are not a lot of unit tests implemented. This is not because I do not believe in unit tests,
-but simply because most of the code in this project is simple "plumming" - transportation of data - so most of the
-code will be tested via integration tests anyways. In a real production setting I would have implemented more unit tests
-for the components in this app.
+Only the core domain classes have been tested. The classes in the com.jenkov.shoppingcart.undertow package have not been
+tested, as these are typically tested during integration tests.
+
+Test coverage is 83% of classes, 55% of lines in total, but a lot higher within core classes (without the undertow package).
 
 
 ## Service URLS:
